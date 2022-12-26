@@ -2,6 +2,8 @@
 
 namespace App\Freebusy;
 
+use App\Models\Employee;
+use App\Models\Freebusy;
 use Carbon\Carbon;
 use DateTime;
 
@@ -55,13 +57,13 @@ class Filter
                     } else {
                         if($this->validateDate($item[1]) == false) {
                             $timestamps_format = strtotime($item[1]);
-                            $start = date('Y-m-d H:i:s', $timestamps_format);
+                            $start = Carbon::parse($timestamps_format)->format('Y-m-d H:i:s');
                         } else {
                             $start = Carbon::createFromFormat('n/j/Y g:i:s A', $item[1])->format('Y-m-d H:i:s');
                         }
                         if($this->validateDate($item[2]) == false) {
                             $timestamps_format = strtotime($item[2]);
-                            $end = date('Y-m-d H:i:s', $timestamps_format);
+                            $end = Carbon::parse($timestamps_format)->format('Y-m-d H:i:s');
                         } else {
                             $end = Carbon::createFromFormat('n/j/Y g:i:s A', $item[2])->format('Y-m-d H:i:s');
                         }
@@ -75,13 +77,29 @@ class Filter
                 }
             }
         }
-
-        dd(collect($filtred_items['57646786307395936680161735716561753784']['dates'])->sortBy('start'));
+        return $filtred_items;
     }
+
     function validateDate($date, $format = 'n/j/Y g:i:s A')
     {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
+    }
+
+    public function storeData($name, $id, $dates)
+    {
+        $employee = new Employee();
+        $employee->id = $id;
+        $employee->name = $name;
+        $employee->save();
+
+        foreach ($dates as $date) {
+            $freebusy = new Freebusy();
+            $freebusy->start_busy = Carbon::parse($date['start']);
+            $freebusy->end_busy = Carbon::parse($date['end']);
+            $freebusy->employee_id = $id;
+            $freebusy->save();
+        }        
     }
 }

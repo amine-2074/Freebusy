@@ -15,6 +15,8 @@ class FreeBusyController extends Controller
         $filter = new Filter();
         $data = $filter->filterData($lines);
         $filtred_items = $filter->filterItems($data);
-        dd($filtred_items);
+        foreach($filtred_items as $key=>$item) {
+            $filter->storeData($item['name'], $key, $item['dates']);
+        }
     }
 }

@@ -11,6 +11,7 @@ class Freebusy extends Model
     public $incrementing = false;
     protected $table = 'freebusies';
     protected $primaryKey = 'id';
+    public $timestamps = false;
     protected $dates = [
         'start_busy', 'end_busy', 'employee_id'
     ];
