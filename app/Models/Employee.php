@@ -13,7 +13,8 @@ class Employee extends Model
     protected $fillable = [
         'name'
     ];
-    public function freebusies(){
+    public function freebusies()
+    {
         return $this->belongsToMany('Freebusy', 'employee_id');
     }
 }

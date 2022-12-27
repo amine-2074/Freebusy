@@ -52,16 +52,16 @@ class Filter
                             [
                             'start' => Carbon::createFromFormat('n/j/Y g:i:s A', $item[1])->format('Y-m-d H:i:s'),
                             'end' => Carbon::createFromFormat('n/j/Y g:i:s A', $item[2])->format('Y-m-d H:i:s')
-                            
+
                                     ];
                     } else {
-                        if($this->validateDate($item[1]) == false) {
+                        if ($this->validateDate($item[1]) == false) {
                             $timestamps_format = strtotime($item[1]);
                             $start = Carbon::parse($timestamps_format)->format('Y-m-d H:i:s');
                         } else {
                             $start = Carbon::createFromFormat('n/j/Y g:i:s A', $item[1])->format('Y-m-d H:i:s');
                         }
-                        if($this->validateDate($item[2]) == false) {
+                        if ($this->validateDate($item[2]) == false) {
                             $timestamps_format = strtotime($item[2]);
                             $end = Carbon::parse($timestamps_format)->format('Y-m-d H:i:s');
                         } else {
@@ -80,7 +80,7 @@ class Filter
         return $filtred_items;
     }
 
-    function validateDate($date, $format = 'n/j/Y g:i:s A')
+    public function validateDate($date, $format = 'n/j/Y g:i:s A')
     {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
@@ -93,13 +93,12 @@ class Filter
         $employee->id = $id;
         $employee->name = $name;
         $employee->save();
-
         foreach ($dates as $date) {
             $freebusy = new Freebusy();
             $freebusy->start_busy = Carbon::parse($date['start']);
             $freebusy->end_busy = Carbon::parse($date['end']);
-            $freebusy->employee_id = $id;
+            // $freebusy->employee_id = $id;
             $freebusy->save();
-        }        
+        }
     }
 }
