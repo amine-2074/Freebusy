@@ -93,11 +93,12 @@ class Filter
         $employee->id = $id;
         $employee->name = $name;
         $employee->save();
+
         foreach ($dates as $date) {
             $freebusy = new Freebusy();
             $freebusy->start_busy = Carbon::parse($date['start']);
             $freebusy->end_busy = Carbon::parse($date['end']);
-            // $freebusy->employee_id = $id;
+            $freebusy->employee_id = $id;
             $freebusy->save();
         }
     }

@@ -15,6 +15,6 @@ class Employee extends Model
     ];
     public function freebusies()
     {
-        return $this->belongsToMany('Freebusy', 'employee_id');
+        return $this->hasMany(Freebusy::class);
     }
 }

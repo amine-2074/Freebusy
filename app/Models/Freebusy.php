@@ -12,11 +12,15 @@ class Freebusy extends Model
     protected $table = 'freebusies';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    protected $fillable = [
+        'employee_id'
+    ];
     protected $dates = [
-        'start_busy', 'end_busy', 'employee_id'
+        'start_busy', 'end_busy'
     ];
 
-    public function employees(){
-        return $this->belongsTo('Employee');
+    public function employees()
+    {
+        return $this->belongsTo(Employee::class);
     }
 }
