@@ -18,4 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/getData', [FreeBusyController::class, 'getData'])->name('getData');
+Route::get('/meeting/getData', [FreeBusyController::class, 'getData'])->name('meeting.getData');
+Route::get('/meeting', [FreeBusyController::class, 'meeting'])->name('meeting');
+Route::post('/meeting/request', [FreeBusyController::class, 'requestMeeting'])->name('meeting.request');
