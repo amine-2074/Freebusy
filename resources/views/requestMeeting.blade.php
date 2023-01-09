@@ -39,14 +39,12 @@
                         <div class="row row-space">
                         <div class="col-2">
                                 <div class="input-group">
-                                    <input class="input--style-1 js-datepicker" type="text" placeholder="Last Requested Date" name="birthday">
-                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    <input class="input--style-1" type="datetime-local" step="1800" id="earliest_requested_date" placeholder="EARLIEST REQUESTED DATE" name="earliest_requested_date">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input class="input--style-1 js-datepicker" type="text" placeholder="First Requested Date" name="birthday">
-                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    <input class="input--style-1" type="datetime-local" step="1800" id="earliest_requested_date" placeholder="LATEST REQUESTED DATE" name="latest_requested_date">
                                 </div>
                             </div>
                         </div>
@@ -63,19 +61,19 @@
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="class">
-                                    <option disabled="disabled" selected="selected">CLASS</option>
-                                    <option>Class 1</option>
-                                    <option>Class 2</option>
-                                    <option>Class 3</option>
-                                </select>
-                                <div class="select-dropdown"></div>
+                                <input class="input--style-1" type="number" step="30" min="0" placeholder="MEETING LENGTH IN MINUTES" name="meeting_length">
                             </div>
                         </div>
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input class="input--style-1" type="text" placeholder="REGISTRATION CODE" name="res_code">
+                                    <label for="office_hours_start">OFFICE HOURS</label>
+                                    <div class="d-flex justify-content-start">
+                                        <input class="input--style-1" type="number" min="8" max="16" placeholder="OFFICE HOURS START" id="office_hours_start" name="office_hours_start"> 
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <input class="input--style-1" type="number" min="9" max="17" placeholder="OFFICE HOURS END" id="office_hours_end" name="office_hours_end">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +96,6 @@
     <!-- Main JS-->
     <script src="{{ URL::to('/') }}/js/global.js"></script>
 
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</body>
 
 </html>
-<!-- end document-->
