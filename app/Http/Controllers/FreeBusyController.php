@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Freebusy\Filter;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class FreeBusyController extends Controller
@@ -18,5 +20,16 @@ class FreeBusyController extends Controller
         foreach($filtred_items as $key=>$item) {
             $filter->storeData($item['name'], $key, $item['dates']);
         }
+    }
+
+    public function meeting()
+    {
+        $employees = Employee::orderBy('name', 'asc')->get();
+        return view('requestMeeting', compact('employees'));
+    }
+
+    public function requestMeeting(Request $request)
+    {
+        dd($request->all());
     }
 }

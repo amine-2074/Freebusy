@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Freebusy;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Str;
 
 class Filter
 {
@@ -87,17 +88,19 @@ class Filter
         return $d && $d->format($format) === $date;
     }
 
-    public function storeData($name, $id, $dates)
+    public function storeData($name, $employee_id, $dates)
     {
+        $id = Str::uuid();
         $employee = new Employee();
         $employee->id = $id;
         $employee->name = $name;
+        $employee->employee_ref = $employee_id;
         $employee->save();
         foreach ($dates as $date) {
             $freebusy = new Freebusy();
             $freebusy->start_busy = Carbon::parse($date['start']);
             $freebusy->end_busy = Carbon::parse($date['end']);
-            // $freebusy->employee_id = $id;
+            $freebusy->employee_id = $id;
             $freebusy->save();
         }
     }

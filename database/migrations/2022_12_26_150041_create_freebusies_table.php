@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->id();
             $table->dateTime('start_busy');
             $table->dateTime('end_busy');
-            $table->string('employee_id', 191)->nullable();
+            $table->uuid('employee_id')->nullable();
             $table->foreign('employee_id')->references('id')->on('employees');
         });
     }

@@ -13,8 +13,9 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->string('id', 191)->primary()->index();
+            $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('employee_ref', 191);
             $table->timestamps();
         });
     }
