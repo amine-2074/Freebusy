@@ -44,7 +44,7 @@ class Meeting
             }
         }
         foreach ($busyByDay as $day=>$value) {
-            dd($value);
+            // dd($value);
             $result = array_reduce($busyByDay[$day], function ($carry, $item) {
                 $key = $item['start_busy'].$item['end_busy'];
                 if (!isset($carry[$key])) {
@@ -52,7 +52,9 @@ class Meeting
                 }
                 return $carry;
             }, array());
+            // dd($busyByDay[$day]);
+            $busyByDay[$day] = array_values($result);
         }
-        dd($result);
+        dd($busyByDay);
     }
 }
