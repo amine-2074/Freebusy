@@ -55,6 +55,19 @@ class Meeting
             // dd($busyByDay[$day]);
             $busyByDay[$day] = array_values($result);
         }
-        dd($busyByDay);
+        $freetime = [];
+        foreach ($busyByDay as $key=>$day) {
+            $start_of_day = Carbon::parse($key)->startOfDay()->addHours($data['office_hours_start'])->format('Y-m-d h:i:s');
+            $end_of_day = Carbon::parse($key)->startOfDay()->addHours($data['office_hours_end'])->format('Y-m-d h:i:s');
+            if (count($day) == 1) {
+                $freetime[] = [
+                    'start_free' => $start_of_day,
+                    'end_free' => $day[0]['start_busy'],
+                    'start_free' => $day[0]['end_busy'],
+                    'end_free' => $end_of_day,
+                ];
+            }
+        }
+        dd($freetime);
     }
 }
