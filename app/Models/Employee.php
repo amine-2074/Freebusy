@@ -9,7 +9,8 @@ class Employee extends Model
 {
     use HasFactory;
     protected $table = 'employees';
-    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $incrementing = false;
     protected $fillable = [
         'name'
     ];

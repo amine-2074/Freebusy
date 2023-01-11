@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\Freebusy;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Filter
 {
@@ -14,19 +16,19 @@ class Filter
         $data = [];
         $ids = [];
         foreach ($lines as $key=>$line) {
-            $item = explode(";", $line);
-            $ids[] = $item[0];
+            $item = explode(";", $line);    //explode the file lines into arrays using the ";"
+            $ids[] = $item[0];              //store the ids in one array
         }
-        $ids = array_unique($ids); //store unique ids in array
+        $ids = array_unique($ids); //delete duplicated ids and let only one foreach id
         if (($key = array_search("\r", $ids)) !== false) {
-            unset($ids[$key]);
+            unset($ids[$key]);  //delete the \r
         }
         foreach ($ids as $id) {
-            $data[$id] = [];
+            $data[$id] = [];    //set array foreach id
         }
-        $col = collect($lines);
+        $col = collect($lines); //put the arrays in one collection to make control easier
         foreach ($col as $key=>$line) {
-            $f_line = explode(";", $line);
+            $f_line = explode(";", $line);  //
             $col[$key] = $f_line;
         }
         foreach ($ids as $id) {
@@ -87,19 +89,22 @@ class Filter
         return $d && $d->format($format) === $date;
     }
 
-    public function storeData($name, $id, $dates)
+    public function storeData($name, $employee_id, $dates)
     {
+        $id = Str::uuid();
         $employee = new Employee();
         $employee->id = $id;
         $employee->name = $name;
+        $employee->employee_ref = $employee_id;
         $employee->save();
 
         foreach ($dates as $date) {
-            $freebusy = new Freebusy();
-            $freebusy->start_busy = Carbon::parse($date['start']);
-            $freebusy->end_busy = Carbon::parse($date['end']);
-            $freebusy->employee_id = $id;
-            $freebusy->save();
+            $record = [
+                'start_busy' => Carbon::parse($date->start),
+                'end_busy' => Carbon::parse($date->end),
+                'employee_id' => $id
+            ];
+            DB::table('freebusies')->insert($record);
         }
     }
 }
