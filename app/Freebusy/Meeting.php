@@ -56,18 +56,40 @@ class Meeting
             $busyByDay[$day] = array_values($result);
         }
         $freetime = [];
-        foreach ($busyByDay as $key=>$day) {
-            $start_of_day = Carbon::parse($key)->startOfDay()->addHours($data['office_hours_start'])->format('Y-m-d h:i:s');
-            $end_of_day = Carbon::parse($key)->startOfDay()->addHours($data['office_hours_end'])->format('Y-m-d h:i:s');
-            if (count($day) == 1) {
-                $freetime[] = [
-                    'start_free' => $start_of_day,
-                    'end_free' => $day[0]['start_busy'],
-                    'start_free' => $day[0]['end_busy'],
-                    'end_free' => $end_of_day,
-                ];
+        $free_datetime = [];
+
+        foreach ($busyByDay as $date => $intervals) {
+            $date_start = Carbon::parse($date)->startOfDay()->addHours($data['office_hours_start'])->format('Y-m-d H:i:s');
+            $date_end = Carbon::parse($date)->startOfDay()->addHours($data['office_hours_end'])->format('Y-m-d H:i:s');
+            // Initialize an array to store the free intervals for the current date
+            $busy = [];
+            // Check if the first busy interval starts before the office start time
+            if (strtotime($intervals[0]['start_busy']) <= strtotime($date_start)) {
+                $busy[] = [$date_start, $intervals[0]['start_busy']];
             }
+            // Iterate through the busy intervals for the current date
+            for ($i = 0; $i < count($intervals) - 1; $i++) {
+                // Add the free interval between the current busy interval and the next busy interval
+                $busy[] = [$intervals[$i]['end_busy'], $intervals[$i + 1]['start_busy']];
+            }
+            // Check if the last busy interval ends after the office end time
+            if (!strtotime($intervals[count($intervals) - 1]['end_busy']) >= strtotime($date_end)) {
+                $busy[] = [$intervals[count($intervals) - 1]['end_busy'], $date_end];
+            }
+            // Add the free intervals for the current date to the free datetime array
+            $free_datetime[$date] = $busy;
         }
-        dd($freetime);
+
+        dd($free_datetime);
+    }
+    public function getFreeIntervals($start, $end, $busy)
+    {
+        sort($busy);
+        $free = [[$start, $busy[0][0]]];
+        for ($i = 0; $i < count($busy) - 1; $i++) {
+            $free[] = [$busy[$i][1], $busy[$i + 1][0]];
+        }
+        $free[] = [$busy[count($busy) - 1][1], $end];
+        return $free;
     }
 }
