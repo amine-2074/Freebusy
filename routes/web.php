@@ -22,3 +22,4 @@ Route::get('/meeting', [FreeBusyController::class, 'meeting'])->name('meeting');
 Route::get('/meeting/getData', [FreeBusyController::class, 'getData'])->name('meeting.getData');
 Route::get('/meeting/storeData', [FreeBusyController::class, 'storeData'])->name('meeting.storeData');
 Route::post('/meeting/request', [FreeBusyController::class, 'requestMeeting'])->name('meeting.request');
+Route::get('/meeting/booking/{date}/{participants}/{length}', [FreeBusyController::class, 'bookMeeting'])->name('meeting.book');

@@ -103,7 +103,7 @@ class Meeting
                 ];
             }
             //check if in the period choosen by user, the participant has busy dates or not
-            if (!empty($free_datetime)) {
+            if (!empty($free_datetime[$participant_id])) {
                 $freedays = array_diff_key($dateRange, $free_datetime[$participant_id]);
                 $totalfree[$participant_id] = array_merge($freedays, $free_datetime[$participant_id]);
             } else {
@@ -159,13 +159,12 @@ class Meeting
                             // Only add this date to the $common_hours array if there are any common hours
                             if(count($common_hours_date) > 0){
                             $common_hours[$date] = $common_hours_date;
+                            }
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-        dd($common_hours);
+        return $common_hours;
     }
 }
