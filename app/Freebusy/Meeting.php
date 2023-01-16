@@ -113,27 +113,49 @@ class Meeting
         return $totalfree;
     }
 
-    public function suggestMeeting($freetimes)
+    public function suggestMeeting($freetimes, $meeting_length)
     {
-        $common_60_minutes = [];
-        $employee_ids = array_keys($freetimes);
-        for($i = 0; $i < count($employee_ids); $i++) {
-            for($j = $i+1; $j < count($employee_ids); $j++) {
-                $employee1_id = $employee_ids[$i];
-                $employee2_id = $employee_ids[$j];
-                $employee1_schedule = $freetimes[$employee1_id];
-                $employee2_schedule = $freetimes[$employee2_id];
-                $common_60_minutes = array();
-                foreach($employee1_schedule as $date => $time_slots) {
-                    if(isset($employee2_schedule[$date])) {
-                        $result = array_intersect($employee1_schedule[$date], $employee2_schedule[$date]);
-                        if (!empty($result)) {
-                            $common_60_minutes[$employee1_id][$employee2_id][$date] = $result;
+        // Initialize an empty array to store the common free hours
+        $common_hours = [];
+        // Iterate through all the employees and their schedules
+        // Iterate through all the employees and their schedules
+foreach($freetimes as $employee1_id => $employee1_schedule) {
+    foreach($freetimes as $employee2_id => $employee2_schedule) {
+        // Only compare schedules if the employees are different
+        if ($employee1_id != $employee2_id) {
+            // Iterate through each date in the first employee's schedule
+            foreach($employee1_schedule as $date => $time_slots) {
+                // Check if the second employee has schedule for this date
+                if(isset($employee2_schedule[$date])) {
+                    // Iterate through each time slot in the first employee's schedule
+                    foreach($time_slots as $time_slot) {
+                        // Convert start and end time to DateTime objects for easy comparison
+                        $start_time = new DateTime($time_slot[0]);
+                        $end_time = new DateTime($time_slot[1]);
+                        // Iterate through each time slot of duration $meeting_length between the start and end time
+                        while ($start_time < $end_time) {
+                            // Convert current time to string for storing in $common_hours array
+                            $start_time_str = $start_time->format('Y-m-d H:i:s');
+                            // Iterate through each time slot in the second employee's schedule
+                            foreach($employee2_schedule[$date] as $time_slot2) {
+                                // Convert start and end time to DateTime objects for easy comparison
+                                $start_time2 = new DateTime($time_slot2[0]);
+                                $end_time2 = new DateTime($time_slot2[1]);
+                                // Check if current time slot is also free time for the second employee
+                                if ($start_time >= $start_time2 && $start_time < $end_time2) {
+                                    // Add current time slot to the $common_hours array
+                                    $common_hours[$date][] = $start_time_str;
+                                }
+                            }
+                            // Move to the next time slot
+                            $start_time->modify('+'.$meeting_length.' minutes');
                         }
                     }
                 }
             }
         }
-        return $common_60_minutes;
+    }
+}
+        dd($common_hours);
     }
 }
