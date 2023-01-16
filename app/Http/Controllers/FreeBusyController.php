@@ -46,6 +46,8 @@ class FreeBusyController extends Controller
     {
         $data = $request->all();
         $meetingClass = new Meeting();
-        $meetingClass->findFreeTime($data);
+        $freetimes = $meetingClass->findFreeTime($data);
+        $suggested_meeting_date_times = $meetingClass->suggestMeeting($freetimes);
+        dd($suggested_meeting_date_times);
     }
 }

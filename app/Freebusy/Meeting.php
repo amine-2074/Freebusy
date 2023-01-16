@@ -96,14 +96,44 @@ class Meeting
             $dateRange = array();
             for ($i = 0; $i <= $days; $i++) {
                 $dateRange[$start->copy()->addDays($i)->format('Y-m-d')] = [
-                    0 => $start->copy()->addDays($i)->startOfDay()->addHours($data['office_hours_start'])->format('Y-m-d H:i:s'),
-                    1 => $start->copy()->addDays($i)->startOfDay()->addHours($data['office_hours_end'])->format('Y-m-d H:i:s')
+                    0 => [
+                        $start->copy()->addDays($i)->startOfDay()->addHours($data['office_hours_start'])->format('Y-m-d H:i:s'),
+                        $start->copy()->addDays($i)->startOfDay()->addHours($data['office_hours_end'])->format('Y-m-d H:i:s')
+                    ]
                 ];
             }
-            $freedays = array_diff_key($dateRange, $free_datetime[$participant_id]);
-            $totalfree = array_merge($freedays, $free_datetime[$participant_id]);
-            dd($totalfree);
+            //check if in the period choosen by user, the participant has busy dates or not
+            if (!empty($free_datetime)) {
+                $freedays = array_diff_key($dateRange, $free_datetime[$participant_id]);
+                $totalfree[$participant_id] = array_merge($freedays, $free_datetime[$participant_id]);
+            } else {
+                $totalfree[$participant_id] = ($dateRange);
+            }
         }
-        dd($free_datetime);
+        return $totalfree;
+    }
+
+    public function suggestMeeting($freetimes)
+    {
+        $common_60_minutes = [];
+        $employee_ids = array_keys($freetimes);
+        for($i = 0; $i < count($employee_ids); $i++) {
+            for($j = $i+1; $j < count($employee_ids); $j++) {
+                $employee1_id = $employee_ids[$i];
+                $employee2_id = $employee_ids[$j];
+                $employee1_schedule = $freetimes[$employee1_id];
+                $employee2_schedule = $freetimes[$employee2_id];
+                $common_60_minutes = array();
+                foreach($employee1_schedule as $date => $time_slots) {
+                    if(isset($employee2_schedule[$date])) {
+                        $result = array_intersect($employee1_schedule[$date], $employee2_schedule[$date]);
+                        if (!empty($result)) {
+                            $common_60_minutes[$employee1_id][$employee2_id][$date] = $result;
+                        }
+                    }
+                }
+            }
+        }
+        return $common_60_minutes;
     }
 }
