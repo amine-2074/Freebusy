@@ -11,6 +11,15 @@ use Illuminate\Support\Str;
 
 class Filter
 {
+    public function SendData()
+    {
+        $path = base_path(config('services.freebusy.path')). '/clear_freebusy.json';
+        $filtred_items = json_decode(file_get_contents($path));
+        foreach ($filtred_items as $key=>$item) {
+            $this->storeData($item->name, $key, $item->dates);
+        }
+    }
+
     public function filterData($lines)
     {
         $data = [];

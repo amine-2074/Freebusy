@@ -25,18 +25,11 @@ class FreeBusyController extends Controller
         $clear_data = json_encode($filtred_items);
         $store_path = base_path(config('services.freebusy.path')). '/clear_freebusy.json';
         file_put_contents($store_path, $clear_data);
-
+        $filter->SendData();
+        return redirect()->route('meeting');
     }
 
-    public function storeData()
-    {
-        $path = base_path(config('services.freebusy.path')). '/clear_freebusy.json';
-        $filtred_items = json_decode(file_get_contents($path));
-        $filter = new Filter();
-        foreach($filtred_items as $key=>$item) {
-            $filter->storeData($item->name, $key, $item->dates);
-        }
-    }
+
 
     public function meeting()
     {
@@ -50,8 +43,7 @@ class FreeBusyController extends Controller
         $participants_ids = $data['participants'];
         $length = $data['meeting_length'];
         $participants = [];
-        foreach($participants_ids as $participants_id)
-        {
+        foreach ($participants_ids as $participants_id) {
             $participant = Employee::where('id', $participants_id)->first();
             $participants[] = $participant->name;
         }
@@ -75,8 +67,7 @@ class FreeBusyController extends Controller
 
         //add meeting datetime to freebusy table
         $participants_decoded = json_decode($participants);
-        foreach($participants_decoded as $participant)
-        {
+        foreach ($participants_decoded as $participant) {
             $employee = Employee::where('name', $participant)->first();
             $newbusydate = new Freebusy();
             $newbusydate->start_busy = $startMeeting;
