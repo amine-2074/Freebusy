@@ -14,23 +14,6 @@ use Illuminate\Support\Facades\File;
 
 class FreeBusyController extends Controller
 {
-    public function getData()
-    {
-        $path =  base_path(config('services.freebusy.path')). '/freebusy.txt';
-        $content = File::get($path);
-        $lines = explode("\n", $content);
-        $filter = new Filter();
-        $data = $filter->filterData($lines);
-        $filtred_items = $filter->filterItems($data);
-        $clear_data = json_encode($filtred_items);
-        $store_path = base_path(config('services.freebusy.path')). '/clear_freebusy.json';
-        file_put_contents($store_path, $clear_data);
-        $filter->SendData();
-        return redirect()->route('meeting');
-    }
-
-
-
     public function meeting()
     {
         $employees = Employee::orderBy('name', 'asc')->get();
