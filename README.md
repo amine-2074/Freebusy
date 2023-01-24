@@ -1,66 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center">
+  FreeBusy :rocket:
+</h1>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Link: https://github.com/amine-2074/Freebusy
+> **FreeBusy**: Adjective
 
-## About Laravel
+   * [Getting Started](#Getting-Started)
+   * [Dependencies](#Dependencies)
+   * [Installation](#installation)
+   * [Local Server](#Local-Server)
+   * [Created using](#created)
+   * [Migrations](#migrations)
+   * [Validations](#validations)
+   * [Requirements](#requirements)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Getting Started
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ces instructions vous permettent d'avoir une copie du projet fonctionnelle sur votre machine locale pour pouvoir développer et tester le projet.
 
-## Learning Laravel
+### Dependencies
+The project is based on the PHP Laravel 5.8 framework and needs the following modules to work:
+* PHP >= 8.0.2
+* guzzle >= 7.2
+* fMbstringramework >= 9.19
+* sanctum >= 3.0
+* tinker >= 2.7
+* composer = 2.5.1
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The first step is to create a database to allow the application to connect to it by replacing the .env file with the contents of .env.example file
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Then just import the data and tables and create an encryption key using the following commands :
 
-## Laravel Sponsors
+```
+php artisan migrate     //migrate the tables to the database 
+php artisan db:seed     //sends the data of the file freebusy.txt to the database after the treatment
+php artisan key:generate    //generates a key for the application
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Local-Server
 
-### Premium Partners
+This command launches a local development server at the address [http://localhost:8000](http://localhost:8000)
+```
+php artisan serve
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## created
+* [Laravel](https://laravel.com/docs/9.x)
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Migrations
+The name of the migrations follows an ```action_tool_table``` type naming logic with the action being one of the following values:
 
-## Code of Conduct
+- Create for the creation of new table
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```shell
+php artisan make:migration create_project_files_table --create=project_files
+```
+- Add for adding columns to existing tables
+```shell
+php artisan make:migration add_votes_to_project_files_table --table=project_files
+```
+- Change for modifying columns of existing tables
+```shell
+php artisan make:migration change_clientid_project_files_table --table=project_files
+```
+The set of methods for creating and modifying tables is available in the [Laravel 5.8 documentation](https://laravel.com/docs/9.x/migrations)
 
-## Security Vulnerabilities
+### Requirements
+In the project folder you will find a folder named requirements inside the folder there is 3 php.ini files that I invite you to copy them and past them in the place of the old ones inside your php folder of xampp.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### tests
+To run tests all what you have to do is to run the following command
 
-## License
+```shell
+composer test
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+after runing the command there is a folder named coverage that will be automatically generated, if you want to see the result of tests I invite you to open the file index.html inside the coverage folder.
