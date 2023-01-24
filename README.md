@@ -20,7 +20,7 @@ Link: https://github.com/amine-2074/Freebusy
 Ces instructions vous permettent d'avoir une copie du projet fonctionnelle sur votre machine locale pour pouvoir développer et tester le projet.
 
 ### Dependencies
-The project is based on the PHP Laravel 5.8 framework and needs the following modules to work:
+The project is based on the PHP Laravel 9 framework and needs the following modules to work:
 * PHP >= 8.0.2
 * guzzle >= 7.2
 * sanctum >= 3.0
@@ -67,7 +67,7 @@ php artisan make:migration add_votes_to_project_files_table --table=project_file
 ```shell
 php artisan make:migration change_clientid_project_files_table --table=project_files
 ```
-The set of methods for creating and modifying tables is available in the [Laravel 5.8 documentation](https://laravel.com/docs/9.x/migrations)
+The set of methods for creating and modifying tables is available in the [Laravel 9 documentation](https://laravel.com/docs/9.x/migrations)
 
 ### Requirements
 In the project folder you will find a folder named requirements inside the folder there is 4 php.ini files that I invite you to copy them and past them in the place of the old ones inside your php folder of xampp.
