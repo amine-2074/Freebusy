@@ -70,7 +70,7 @@ php artisan make:migration change_clientid_project_files_table --table=project_f
 The set of methods for creating and modifying tables is available in the [Laravel 5.8 documentation](https://laravel.com/docs/9.x/migrations)
 
 ### Requirements
-In the project folder you will find a folder named requirements inside the folder there is 3 php.ini files that I invite you to copy them and past them in the place of the old ones inside your php folder of xampp.
+In the project folder you will find a folder named requirements inside the folder there is 4 php.ini files that I invite you to copy them and past them in the place of the old ones inside your php folder of xampp.
 
 ### tests
 To run tests all what you have to do is to run the following command
