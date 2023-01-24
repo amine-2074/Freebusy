@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/meeting', [FreeBusyController::class, 'meeting'])->name('meeting');
-Route::get('/meeting/getData', [FreeBusyController::class, 'getData'])->name('meeting.getData');
+Route::get('/', [FreeBusyController::class, 'meeting'])->name('meeting');
 Route::post('/meeting/request', [FreeBusyController::class, 'requestMeeting'])->name('meeting.request');
 Route::get('/meeting/booking/{date}/{participants}/{length}', [FreeBusyController::class, 'bookMeeting'])->name('meeting.book');

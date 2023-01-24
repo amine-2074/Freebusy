@@ -23,7 +23,7 @@ Request meeting
 						<div class="col-2">
 							<div class="input-group">
 								<input class="input--style-1" type="datetime-local" step="1800"
-									id="earliest_requested_date" placeholder="LATEST REQUESTED DATE"
+									id="latest_requested_date" placeholder="LATEST REQUESTED DATE"
 									name="latest_requested_date">
 							</div>
 						</div>
@@ -65,6 +65,15 @@ Request meeting
 						<button class="btn btn--radius btn--green" type="submit">Submit</button>
 					</div>
 				</form>
+				@if ($errors->any())
+					<div class="alert alert-danger">
+					    <ul class="list-unstyled">
+					        @foreach ($errors->all() as $error)
+					        <li>{{ $error }}</li>
+					        @endforeach
+					    </ul>
+					</div>
+				@endif
 			</div>
 		</div>
 	</div>

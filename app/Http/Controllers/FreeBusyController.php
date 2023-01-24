@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Freebusy\Filter;
 use App\Freebusy\Meeting;
 use App\Models\Employee;
 use App\Models\Freebusy;
 use App\Models\Meeting as ModelsMeeting;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class FreeBusyController extends Controller
 {
@@ -22,6 +19,15 @@ class FreeBusyController extends Controller
 
     public function requestMeeting(Request $request)
     {
+        $validator = $request->validate([
+            'earliest_requested_date' => 'required|date',
+            'latest_requested_date' => 'required|date|after:earliest_requested_date',
+            'participants' => 'filled|array',
+            'meeting_length' => 'required',
+            'office_hours_start' => 'required',
+            'office_hours_end' => 'required',
+        ]);
+
         $data = $request->all();
         $participants_ids = $data['participants'];
         $length = $data['meeting_length'];

@@ -23,7 +23,6 @@ Ces instructions vous permettent d'avoir une copie du projet fonctionnelle sur v
 The project is based on the PHP Laravel 5.8 framework and needs the following modules to work:
 * PHP >= 8.0.2
 * guzzle >= 7.2
-* fMbstringramework >= 9.19
 * sanctum >= 3.0
 * tinker >= 2.7
 * composer = 2.5.1
@@ -35,9 +34,10 @@ The first step is to create a database to allow the application to connect to it
 Then just import the data and tables and create an encryption key using the following commands :
 
 ```
+php artisan key:generate    //generate a key for the application
 php artisan migrate     //migrate the tables to the database 
-php artisan db:seed     //sends the data of the file freebusy.txt to the database after the treatment
-php artisan key:generate    //generates a key for the application
+php artisan db:seed     //sends the data of the file freebusy.txt to the database (it will take some time due to the number of data)
+composer install    //to install dependencies and generate vendor folder and autoload files
 ```
 
 ### Local-Server
